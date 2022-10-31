@@ -1,0 +1,90 @@
+version: '3.9'
+services:
+  gogs:
+    image: gogs/gogs:0.1.2@sha256:4ecf29c8795dd0172e10a0ba2bcbe73975b9b42806172f5bc706be3cbd4cb05c
+    hostname: gogs
+    container_name: gogs__gogs
+    restart: unless-stopped
+
+    environment:
+      TZ: JST
+
+    volumes:
+      - type: volume
+        source: gogs_data
+        target: /data
+
+    expose:
+      - 3000
+
+    networks:
+      - default
+      - outband
+
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+
+  mariadb:
+    image: mariadb:10.9.3@sha256:813d8d1148068d86a48ea3801568b805b66199cda1b2d5e1e0989498106b852d
+
+    hostname: mariadb
+    container_name: gogs__mariadb
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: gogs
+      MYSQL_USER: gogs
+      MYSQL_PASSWORD: gogs
+      MYSQL_DATABASE: gogs
+
+    volumes:
+      - type: volume
+        source: mariadb_data
+        target: /var/lib/mysql
+
+    networks:
+      - default
+
+  cloudflared:
+    image: cloudflare/cloudflared:2022.10.3@sha256:d3840dadf665098fa7307aeec68f1ce8802437559cb06cf3863afcf963a02f6d
+    hostname: cloudflared
+    container_name: gogs__cloudflared
+    restart: unless-stopped
+
+    environment:
+      TUNNEL_METRICS: 0.0.0.0:9126
+      TUNNEL_LOGFILE: /dev/stdout
+
+    command: tunnel run --token ${TUNNEL_TOKEN}
+
+    networks:
+      default:
+      outband:
+      prometheus__cloudflared:
+        aliases:
+          - gogs__cloudflared
+
+    deploy:
+      resources:
+        limits:
+          memory: 128m
+
+volumes:
+  gogs_data:
+    name: gogs__gogs_data
+  mariadb_data:
+    name: gogs__mariadb_data
+
+networks:
+  default:
+    name: gogs__default
+    internal: true
+
+  outband:
+    name: gogs__outband
+
+  prometheus__cloudflared:
+    name: prometheus__cloudflared 
+    external: true

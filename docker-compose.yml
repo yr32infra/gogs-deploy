@@ -27,7 +27,7 @@ services:
           memory: 512m
 
   mariadb:
-    image: mariadb:10.9.3@sha256:813d8d1148068d86a48ea3801568b805b66199cda1b2d5e1e0989498106b852d
+    image: mariadb:10.9.3@sha256:b516afae7c1b82e954bfefe011fc4df71d37f0ad0386bb4f5fe381c23b938984
 
     hostname: mariadb
     container_name: gogs__mariadb

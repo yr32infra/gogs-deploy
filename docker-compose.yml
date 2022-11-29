@@ -27,7 +27,7 @@ services:
           memory: 512m
 
   mariadb:
-    image: mariadb:10.9.3@sha256:813d8d1148068d86a48ea3801568b805b66199cda1b2d5e1e0989498106b852d
+    image: mariadb:10.10.2@sha256:3564ad7a0b556154afb8ef50a3bd7a44b40cf6a5790da13302526a8bb0fa50c5
 
     hostname: mariadb
     container_name: gogs__mariadb
@@ -53,7 +53,7 @@ services:
           memory: 512m
 
   cloudflared:
-    image: cloudflare/cloudflared:2022.10.3@sha256:d3840dadf665098fa7307aeec68f1ce8802437559cb06cf3863afcf963a02f6d
+    image: cloudflare/cloudflared:2022.11.0@sha256:807f9b7516e9892cfc3c2c0eecd71a99ac9aef1649b771c2bff868241a86eb04
     hostname: cloudflared
     container_name: gogs__cloudflared
     restart: unless-stopped

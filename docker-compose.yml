@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   gogs:
-    image: gogs/gogs:0.13.0@sha256:730c521a280c0c6acd18f7b4335acc1a6ffc5ad31f872d5a193317b47a62eb90
+    image: gogs/gogs:0.13.1@sha256:7af14f34cf33c6685bf2a1a7a0514c1933d953a35bcd203fc8904d24b7836e82
     hostname: gogs
     container_name: gogs__gogs
     restart: unless-stopped
